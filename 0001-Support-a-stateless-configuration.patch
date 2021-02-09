@@ -1,6 +1,6 @@
-From a666c36d499772f6e4b16b7508287a6fd3f61380 Mon Sep 17 00:00:00 2001
+From a995f2f500b9d04fedf5c76f02db85e0c0ffbcda Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
-Date: Thu, 10 Mar 2016 16:11:56 +0000
+Date: Mon, 17 Sep 2001 00:00:00 -0700
 Subject: [PATCH] Support a stateless configuration
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
@@ -9,6 +9,13 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 rebased for version 13.0
 
 Signed-off-by: Simental Magana, Marcos <marcos.simental.magana@intel.com>
+---
+
+--
+rebased for version 14.2
+
+Signed-off-by: Karthik Prabhu Vinod <karthik.prabhu.vinod@intel.com>
+---
 ---
  autogen.sh               |  4 ++++
  configure.ac             |  2 ++
@@ -28,10 +35,10 @@ index 0000000..3ef451d
 +intltoolize -f
 +./bootstrap.sh $*
 diff --git a/configure.ac b/configure.ac
-index 8278353..fc58870 100644
+index 6809897..8f6ba32 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1376,6 +1376,8 @@ AC_DEFINE(PA_SOEXT, [".so"], [Shared object extension])
+@@ -1391,6 +1391,8 @@ AC_DEFINE(PA_SOEXT, [".so"], [Shared object extension])
  
  AC_SUBST(pulseconfdir, ["${sysconfdir}/pulse"])
  AX_DEFINE_DIR(PA_DEFAULT_CONFIG_DIR, pulseconfdir, [Location of configuration files])
@@ -41,7 +48,7 @@ index 8278353..fc58870 100644
  #### Mac OSX specific stuff #####
  
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 437311d..75925df 100644
+index 454b644..ce1eec6 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -25,14 +25,14 @@ pulseincludedir=$(includedir)/pulse
@@ -52,8 +59,8 @@ index 437311d..75925df 100644
 +xdgautostartdir=$(datadir)/xdg/autostart
  endif
  if HAVE_ALSA
- alsaprofilesetsdir=$(datadir)/pulseaudio/alsa-mixer/profile-sets
- alsapathsdir=$(datadir)/pulseaudio/alsa-mixer/paths
+ alsaprofilesetsdir=$(alsadatadir)/profile-sets
+ alsapathsdir=$(alsadatadir)/paths
  endif
  if HAVE_DBUS
 -dbuspolicydir=$(sysconfdir)/dbus-1/system.d
@@ -71,7 +78,7 @@ index 437311d..75925df 100644
  		system.pa \
  		daemon.conf \
 diff --git a/src/daemon/daemon-conf.c b/src/daemon/daemon-conf.c
-index 33cf7a7..ea0fd71 100644
+index bcf7329..5ef0310 100644
 --- a/src/daemon/daemon-conf.c
 +++ b/src/daemon/daemon-conf.c
 @@ -51,9 +51,16 @@
@@ -91,7 +98,7 @@ index 33cf7a7..ea0fd71 100644
  #define ENV_SCRIPT_FILE "PULSE_SCRIPT"
  #define ENV_CONFIG_FILE "PULSE_CONFIG"
  #define ENV_DL_SEARCH_PATH "PULSE_DLPATH"
-@@ -618,9 +625,16 @@ int pa_daemon_conf_load(pa_daemon_conf *c, const char *filename) {
+@@ -665,9 +672,16 @@ int pa_daemon_conf_load(pa_daemon_conf *c, const char *filename) {
      pa_xfree(c->config_file);
      c->config_file = NULL;
  
@@ -109,7 +116,7 @@ index 33cf7a7..ea0fd71 100644
  
      if (!f && errno != ENOENT) {
          pa_log_warn(_("Failed to open configuration file: %s"), pa_cstrerror(errno));
-@@ -676,9 +690,15 @@ const char *pa_daemon_conf_get_default_script_file(pa_daemon_conf *c) {
+@@ -723,9 +737,15 @@ const char *pa_daemon_conf_get_default_script_file(pa_daemon_conf *c) {
  
      if (!c->default_script_file) {
          if (c->system_instance)
@@ -127,7 +134,7 @@ index 33cf7a7..ea0fd71 100644
      }
  
      return c->default_script_file;
-@@ -690,9 +710,15 @@ FILE *pa_daemon_conf_open_default_script_file(pa_daemon_conf *c) {
+@@ -737,9 +757,15 @@ FILE *pa_daemon_conf_open_default_script_file(pa_daemon_conf *c) {
  
      if (!c->default_script_file) {
          if (c->system_instance)
@@ -146,5 +153,5 @@ index 33cf7a7..ea0fd71 100644
          f = pa_fopen_cloexec(c->default_script_file, "r");
  
 -- 
-2.25.1
+2.30.0
 

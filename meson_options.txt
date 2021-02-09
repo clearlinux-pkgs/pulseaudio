@@ -24,6 +24,9 @@ option('database',
 option('legacy-database-entry-format',
        type : 'boolean',
        description : 'Try to load legacy (< 1.0) database files (card, device and volume restore)')
+option('stream-restore-clear-old-devices',
+       type : 'boolean', value : false,
+       description : 'Forget per-stream routing settings that have been set before version 14.0. Recommended when using GNOME. See https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/issues/832')
 option('running-from-build-tree',
        type : 'boolean',
        description : 'Enable running from build tree')
@@ -48,6 +51,9 @@ option('pulsedsp-location',
 option('modlibexecdir',
        type : 'string',
        description : 'Specify location where modules will be installed')
+option('alsadatadir',
+       type : 'string',
+       description : 'Directory for ALSA card profiles (defaults to ${datadir}/pulseaudio/alsa-mixer)')
 option('systemduserunitdir',
        type : 'string',
        description : 'Directory for systemd user service files')
@@ -56,10 +62,10 @@ option('udevrulesdir',
        description : 'Directory for udev rules (defaults to /lib/udev/rules.d)')
 option('bashcompletiondir',
        type : 'string',
-       description : 'Directory for bash completion files')
+       description : 'Directory for bash completion scripts ["no" disables]')
 option('zshcompletiondir',
        type : 'string',
-       description : 'Zsh completions directory')
+       description : 'Directory for zsh completion scripts ["no" disables]')
 
 # Optional features
 
@@ -93,6 +99,9 @@ option('glib',
 option('gsettings',
        type : 'feature', value : 'auto',
        description : 'Optional GSettings support')
+option('gstreamer',
+       type : 'feature', value : 'disabled',
+       description : 'Optional GStreamer dependency for media-related functionality')
 option('gtk',
        type : 'feature', value : 'auto',
        description : 'Optional Gtk+ 3 support')

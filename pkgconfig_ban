@@ -28,3 +28,6 @@ avahi-client
 32avahi-client
 32fftw3f
 32bash-completion
+32gstreamer-1.0
+32gstreamer-app-1.0
+32gstreamer-rtp-1.0

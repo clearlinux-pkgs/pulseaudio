@@ -1,17 +1,15 @@
 Configure miss: stow
+Configure miss: g++ option to enable C++11 features
 Configure miss: sys/dl.h
 Configure miss: sys/conf.h
 Configure miss: ws2tcpip.h
 Configure miss: sys/atomic.h
+Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: paccept
 Configure miss: sig2str
 Configure miss: whether we need libatomic_ops
 Configure miss:  tdb 
-Configure miss: CoreAudio/CoreAudio.h usability
-Configure miss: CoreAudio/CoreAudio.h presence
 Configure miss: CoreAudio/CoreAudio.h
-Configure miss: sys/audio.h usability
-Configure miss: sys/audio.h presence
 Configure miss: sys/audio.h
 Configure miss: mmsystem.h
 Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
@@ -19,28 +17,24 @@ Configure miss:  avahi-client >= 0.6.0
 Configure miss:  jack >= 0.117.0 
 Configure miss:  libasyncns >= 0.1 
 Configure miss: tcpwrap library and headers
-Configure miss: lirc/lirc_client.h usability
-Configure miss: lirc/lirc_client.h presence
 Configure miss: lirc/lirc_client.h
 Configure miss: lirc_init in -llirc_client
 Configure miss:  soxr >= 0.1.1 
 Configure miss:  webrtc-audio-processing >= 0.2 
 Configure miss: stow
-Configure miss: whether a statically linked program can dlopen itself
+Configure miss: g++ option to enable C++11 features
 Configure miss: sys/dl.h
 Configure miss: sys/conf.h
 Configure miss: ws2tcpip.h
 Configure miss: sys/atomic.h
+Configure miss: whether a statically linked program can dlopen itself
+Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: whether __x86_64__ is declared
 Configure miss: paccept
 Configure miss: sig2str
 Configure miss: whether we need libatomic_ops
 Configure miss:  tdb 
-Configure miss: CoreAudio/CoreAudio.h usability
-Configure miss: CoreAudio/CoreAudio.h presence
 Configure miss: CoreAudio/CoreAudio.h
-Configure miss: sys/audio.h usability
-Configure miss: sys/audio.h presence
 Configure miss: sys/audio.h
 Configure miss: mmsystem.h
 Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
@@ -48,8 +42,6 @@ Configure miss:  avahi-client >= 0.6.0
 Configure miss:  jack >= 0.117.0 
 Configure miss:  libasyncns >= 0.1 
 Configure miss: tcpwrap library and headers
-Configure miss: lirc/lirc_client.h usability
-Configure miss: lirc/lirc_client.h presence
 Configure miss: lirc/lirc_client.h
 Configure miss: lirc_init in -llirc_client
 Configure miss:  soxr >= 0.1.1 

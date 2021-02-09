@@ -1,22 +1,185 @@
+PulseAudio 14.2
+
+A bug fix release.
+
+ * Fix port switching when unplugging headphones
+
+Contributors
+
+  Tanu Kaskinen
+
+
+PulseAudio 14.1
+
+A bug fix release.
+
+ * Support upto 8 mixer channels on ALSA devices
+ * Handle ALSA jacks with the same name but different index values
+ * Switch to plugged-in headset when mic availability is unknown
+ * Fix a potential segfault in the Bluetooth oFono HFP backend
+ * Fix a problem with module-ladspa-sink when avoid-resampling=true
+ * Fix database names containing canonical host for meson builds
+
+Contributors
+
+  Arun Raghavan
+  Hui Wang
+  Igor V. Kovalenko
+  Jaroslav Kysela
+  Kai-Heng Feng
+  Patrick Gaskin
+  Tanu Kaskinen
+  morrishoresh
+
+
+PulseAudio 14.0
+
+Changes at a glance:
+
+ * Notes for end users
+   * Significant routing changes to default sinks/sources
+     * Changing the default sink moves streams from the old default sink to the new
+     * Moving a stream to the default sink removes the "manually routed" status of the stream
+     * If a sink changes status to available, streams that prefer that sink move there automatically
+     * The same changes have been applied to the source stream routing
+     * Workaround for GNOME Sound Settings' stream routing behaviour
+     * module-rescue-streams is deprecated, functionality moved to the core
+     * New rescue-streams option in daemon.conf
+   * Automatic switching to HDMI is now disabled by default
+   * Better support for some USB gaming headsets
+   * Flat volumes are now disabled by default
+   * The RAOP sink can be configured to automatically reconnect on connection failures
+   * Separate sink_channels and source_channels for module-jackdbus-detect
+   * Improved support for ALSA UCM
+   * Support for ALSA mixer controls with non-zero index
+   * It's now possible to set intended roles for devices in the ALSA profile configuration
+   * Ports now have a type associated with them
+   * Mappings have a new "description-key" option in the ALSA profile configuration
+   * New xauthority argument for X11 modules
+   * module-null-sink's compressed format support can now be configured at run-time
+   * The enable-lfe-remixing option in daemon.conf was split into remixing-produce-lfe and remixing-consume-lfe
+   * New channel_map argument for module-raop-sink
+ * Notes for application developers
+   * pa_mainloop_prepare interprets the timeout argument as microseconds again
+   * New availability_group and type fields in the port info structs
+   * New macros: PA_LIKELY(), PA_UNLIKELY(), PA_CLAMP() and PA_CLAMP_UNLIKELY()
+ * Notes for packagers
+   * New GStreamer-based RTP implementation
+   * qpaeq switched from Python 2 to Python 3
+   * Compile-time option to forget pre-14.0 stream routing
+   * The install path of the ALSA configuration files is now configurable
+   * GNU gettext minimum version requirement bumped from 0.19.3 to 0.19.8
+   * Heads-up: dropping autotools build system
+   * Heads-up: dropping EsounD support is considered, tell us if you still need it
+   * Heads-up: dropping GConf support
+
+Detailed change log:
+
+  https://www.freedesktop.org/wiki/Software/PulseAudio/Notes/14.0/
+
+Contributors
+
+  Alexander E. Patrakov
+  Arun Raghavan
+  Balázs Meskó
+  Baurzhan Muftakhidinov
+  Ben Buchwald
+  Daniil Kovalev
+  Dave Chiluk
+  David Heidelberg
+  Dusan Kazik
+  Eero Nurkkala
+  Emanuil Novachev
+  Emilio Herrera
+  Felipe Sateler
+  Felix Yan
+  Geert Warrink
+  Georg Chini
+  Göran Uddeborg
+  Hugo Osvaldo Barrera
+  Hui Wang
+  Igor V. Kovalenko
+  Jan Alexander Steffens
+  Jarno Suni
+  Jaroslav Kysela
+  Jaska Uimonen
+  Jean-Baptiste Holcroft
+  Josh
+  Juliano de Souza Camargo
+  Kai-Heng Feng
+  Karl Ove Hufthammer
+  Khem Raj
+  Krzysztof Stasiowski
+  Laurent Bigonville
+  Libin Yang
+  Marc Ranolfi
+  Michael Pivonka
+  Milo Casagrande
+  Milo Ivir
+  Nick Moriarty
+  Oğuz Ersen
+  Pali Rohár
+  Peter Levine
+  Peter Meerwald
+  Philip Withnall
+  Piotr Drąg
+  RODRIGUEZ Christophe
+  Rafael Fontenelle
+  Ralph Seichter
+  Rasmus Thomsen
+  Rickie Schroeder
+  Rosen Penev
+  Ryszard Knop
+  Sanchayan Maity
+  Sebastian Dröge
+  Sebastien
+  StefanBruens
+  Taahir Ahmed
+  Tanu Kaskinen
+  Timo Gurr
+  Tom Yan
+  Tomasz Kontusz
+  Vasilis Tsiligiannis
+  Wim Taymans
+  Yi-Jyun Pan
+  Yuri Chornoivan
+  itsthem
+  muzena
+  roshal
+  zhaochengyi
+
+
 PulseAudio 13.0
 
 Changes at a glance:
 
  * Added support for Dolby TrueHD and DTS-HD Master Audio
+ * Improved 5.1 surround channel routing
  * Improved initial card profile selection for ALSA cards
+ * Automatically switch away from unavailable card profiles
  * Bluetooth card profile choices aren't persistent any more by default
- * Added support for SteelSeries Arctis 5 USB headset
+ * Added support for some SteelSeries Arctis 5 USB headsets
+ * Removed KDE specific routing configuration
+ * New information collection script for bug reports: pa-info
  * New "max_latency_msec" module argument for module-loopback
+ * New "fast_adjust_threshold_msec" module argument for module-loopback
  * New "stream_name" module argument for module-rtp-send
  * Fixed S/PDIF for CMEDIA USB2.0 High-Speed True HD Audio
  * Use source sample spec and channel map by default in module-loopback
+ * module-role-cork and module-role-ducking can now use recording streams as triggers
  * New "avoid_resampling" module argument for module-udev-detect and module-alsa-card
  * "avoid_resampling" also tries to avoid format conversion if the ALSA device supports it
+ * Added support for non-PCM formats in module-null-sink
+ * More efficient channel remapping in some cases for 32-bit streams
+ * Removed the "latency_time" option from module-null-source
  * New function to enable realtime scheduling for client threads
+ * New convenience functions for getting parameters from pa_format_info
+ * New function for pa_threaded_mainloop to run a callback in the mainloop thread without the mainloop lock being held
+ * Const-ification of parameters across headers
  * Removed BlueZ 4 support
  * Dropped intltool
  * Introduction of the Meson build system
- * Const-ification of parameters across headers
+ * New build option for improving build reproducibility
  * Minor bug-fixes, bindings updates and several translation updates
 
 Detailed change log:
