@@ -1,48 +1,71 @@
-Configure miss: stow
-Configure miss: g++ option to enable C++11 features
-Configure miss: sys/dl.h
-Configure miss: sys/conf.h
-Configure miss: ws2tcpip.h
-Configure miss: sys/atomic.h
-Configure miss: gcc options needed to detect all undeclared functions
-Configure miss: paccept
-Configure miss: sig2str
-Configure miss: whether we need libatomic_ops
-Configure miss:  tdb 
-Configure miss: CoreAudio/CoreAudio.h
-Configure miss: sys/audio.h
-Configure miss: mmsystem.h
-Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
 Configure miss:  avahi-client >= 0.6.0 
+Configure miss:  avahi-client >= 0.6.0 
+Configure miss:  avahi-client >= 0.6.0 
+Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
+Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
+Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
+Configure miss:  jack >= 0.117.0 
+Configure miss:  jack >= 0.117.0 
 Configure miss:  jack >= 0.117.0 
 Configure miss:  libasyncns >= 0.1 
-Configure miss: tcpwrap library and headers
+Configure miss:  libasyncns >= 0.1 
+Configure miss:  libasyncns >= 0.1 
+Configure miss:  soxr >= 0.1.1 
+Configure miss:  soxr >= 0.1.1 
+Configure miss:  soxr >= 0.1.1 
+Configure miss:  tdb 
+Configure miss:  tdb 
+Configure miss:  tdb 
+Configure miss:  webrtc-audio-processing >= 0.2 
+Configure miss:  webrtc-audio-processing >= 0.2 
+Configure miss:  webrtc-audio-processing >= 0.2 
+Configure miss: CoreAudio/CoreAudio.h
+Configure miss: CoreAudio/CoreAudio.h
+Configure miss: CoreAudio/CoreAudio.h
+Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
+Configure miss: g++ option to enable C++11 features
+Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: lirc/lirc_client.h
+Configure miss: lirc/lirc_client.h
 Configure miss: lirc/lirc_client.h
 Configure miss: lirc_init in -llirc_client
-Configure miss:  soxr >= 0.1.1 
-Configure miss:  webrtc-audio-processing >= 0.2 
+Configure miss: lirc_init in -llirc_client
+Configure miss: lirc_init in -llirc_client
+Configure miss: mmsystem.h
+Configure miss: mmsystem.h
+Configure miss: mmsystem.h
+Configure miss: paccept
+Configure miss: paccept
+Configure miss: paccept
+Configure miss: sig2str
+Configure miss: sig2str
+Configure miss: sig2str
 Configure miss: stow
-Configure miss: g++ option to enable C++11 features
-Configure miss: sys/dl.h
-Configure miss: sys/conf.h
-Configure miss: ws2tcpip.h
+Configure miss: stow
+Configure miss: stow
 Configure miss: sys/atomic.h
-Configure miss: whether a statically linked program can dlopen itself
-Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: sys/atomic.h
+Configure miss: sys/atomic.h
+Configure miss: sys/audio.h
+Configure miss: sys/audio.h
+Configure miss: sys/audio.h
+Configure miss: sys/conf.h
+Configure miss: sys/conf.h
+Configure miss: sys/conf.h
+Configure miss: sys/dl.h
+Configure miss: sys/dl.h
+Configure miss: sys/dl.h
+Configure miss: tcpwrap library and headers
+Configure miss: tcpwrap library and headers
+Configure miss: tcpwrap library and headers
 Configure miss: whether __x86_64__ is declared
-Configure miss: paccept
-Configure miss: sig2str
+Configure miss: whether a statically linked program can dlopen itself
 Configure miss: whether we need libatomic_ops
-Configure miss:  tdb 
-Configure miss: CoreAudio/CoreAudio.h
-Configure miss: sys/audio.h
-Configure miss: mmsystem.h
-Configure miss:  gconf-2.0 >= 2.4.0 gobject-2.0 
-Configure miss:  avahi-client >= 0.6.0 
-Configure miss:  jack >= 0.117.0 
-Configure miss:  libasyncns >= 0.1 
-Configure miss: tcpwrap library and headers
-Configure miss: lirc/lirc_client.h
-Configure miss: lirc_init in -llirc_client
-Configure miss:  soxr >= 0.1.1 
-Configure miss:  webrtc-audio-processing >= 0.2 
+Configure miss: whether we need libatomic_ops
+Configure miss: whether we need libatomic_ops
+Configure miss: ws2tcpip.h
+Configure miss: ws2tcpip.h
+Configure miss: ws2tcpip.h

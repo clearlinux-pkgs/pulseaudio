@@ -4,7 +4,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 41
+Release  : 42
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
@@ -13,6 +13,7 @@ License  : BSD-3-Clause LGPL-2.1
 Requires: pulseaudio-bin = %{version}-%{release}
 Requires: pulseaudio-config = %{version}-%{release}
 Requires: pulseaudio-data = %{version}-%{release}
+Requires: pulseaudio-filemap = %{version}-%{release}
 Requires: pulseaudio-lib = %{version}-%{release}
 Requires: pulseaudio-libexec = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
@@ -104,6 +105,7 @@ Requires: pulseaudio-libexec = %{version}-%{release}
 Requires: pulseaudio-config = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
 Requires: pulseaudio-services = %{version}-%{release}
+Requires: pulseaudio-filemap = %{version}-%{release}
 
 %description bin
 bin components for the pulseaudio package.
@@ -150,12 +152,21 @@ Requires: pulseaudio-dev = %{version}-%{release}
 dev32 components for the pulseaudio package.
 
 
+%package filemap
+Summary: filemap components for the pulseaudio package.
+Group: Default
+
+%description filemap
+filemap components for the pulseaudio package.
+
+
 %package lib
 Summary: lib components for the pulseaudio package.
 Group: Libraries
 Requires: pulseaudio-data = %{version}-%{release}
 Requires: pulseaudio-libexec = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
+Requires: pulseaudio-filemap = %{version}-%{release}
 
 %description lib
 lib components for the pulseaudio package.
@@ -176,6 +187,7 @@ Summary: libexec components for the pulseaudio package.
 Group: Default
 Requires: pulseaudio-config = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
+Requires: pulseaudio-filemap = %{version}-%{release}
 
 %description libexec
 libexec components for the pulseaudio package.
@@ -222,24 +234,27 @@ cd %{_builddir}/pulseaudio-14.2
 pushd ..
 cp -a pulseaudio-14.2 build32
 popd
+pushd ..
+cp -a pulseaudio-14.2 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1612835827
+export SOURCE_DATE_EPOCH=1634258662
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 %autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d --enable-orc --with-speex --enable-bluez5 \
 --disable-bluez4 --disable-bluez5-ofono-headset
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -253,6 +268,16 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 --disable-bluez4 --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d --enable-orc --with-speex --enable-bluez5 \
+--disable-bluez4 --disable-bluez5-ofono-headset
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
@@ -261,9 +286,11 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check || :
 cd ../build32;
 make %{?_smp_mflags} check || : || :
+cd ../buildavx2;
+make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1612835827
+export SOURCE_DATE_EPOCH=1634258662
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-14.2/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936
@@ -276,12 +303,22 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
+pushd ../buildavx2/
+%make_install_v3
 popd
 %make_install
 %find_lang pulseaudio
 ## install_append content
 rm -rf %{buildroot}%{_datadir}/vala
 ## install_append end
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -303,6 +340,7 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/bin/pulseaudio
 /usr/bin/qpaeq
 /usr/bin/start-pulseaudio-x11
+/usr/share/clear/optimized-elf/bin*
 
 %files config
 %defattr(-,root,root,-)
@@ -444,6 +482,10 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/lib32/pkgconfig/libpulse-simple.pc
 /usr/lib32/pkgconfig/libpulse.pc
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-pulseaudio
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libpulse-mainloop-glib.so.0
@@ -547,6 +589,7 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/lib64/pulseaudio/libpulsecommon-14.2.so
 /usr/lib64/pulseaudio/libpulsecore-14.2.so
 /usr/lib64/pulseaudio/libpulsedsp.so
+/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)
@@ -649,6 +692,7 @@ rm -rf %{buildroot}%{_datadir}/vala
 %files libexec
 %defattr(-,root,root,-)
 /usr/libexec/pulse/gsettings-helper
+/usr/share/clear/optimized-elf/exec*
 
 %files license
 %defattr(0644,root,root,0755)
