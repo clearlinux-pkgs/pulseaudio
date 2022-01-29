@@ -4,7 +4,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 42
+Release  : 43
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
