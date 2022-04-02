@@ -28,6 +28,7 @@ Configure miss: g++ option to enable C++11 features
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: gcc options needed to detect all undeclared functions
+Configure miss: i686-generic-linux-gnu-file
 Configure miss: lirc/lirc_client.h
 Configure miss: lirc/lirc_client.h
 Configure miss: lirc/lirc_client.h
@@ -69,3 +70,5 @@ Configure miss: whether we need libatomic_ops
 Configure miss: ws2tcpip.h
 Configure miss: ws2tcpip.h
 Configure miss: ws2tcpip.h
+Configure miss: x86_64-generic-linux-gnu-file
+Configure miss: x86_64-generic-linux-gnu-file

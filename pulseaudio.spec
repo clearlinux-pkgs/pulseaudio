@@ -4,7 +4,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 44
+Release  : 45
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
@@ -81,7 +81,6 @@ BuildRequires : pkgconfig(sndfile)
 BuildRequires : pkgconfig(x11-xcb)
 BuildRequires : pkgconfig(xcb)
 BuildRequires : pkgconfig(xtst)
-BuildRequires : rtkit
 BuildRequires : sbc-dev
 BuildRequires : speex-dev
 BuildRequires : speexdsp-dev
@@ -243,14 +242,18 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634258662
+export SOURCE_DATE_EPOCH=1648873299
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d --enable-orc --with-speex --enable-bluez5 \
---disable-bluez4 --disable-bluez5-ofono-headset
+%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d \
+--enable-orc \
+--with-speex \
+--enable-bluez5 \
+--disable-bluez4 \
+--disable-bluez5-ofono-headset
 make  %{?_smp_mflags}
 
 pushd ../build32/
@@ -259,8 +262,12 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d --enable-orc --with-speex --enable-bluez5 \
---disable-bluez4 --disable-bluez5-ofono-headset --without-fftw \
+%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d \
+--enable-orc \
+--with-speex \
+--enable-bluez5 \
+--disable-bluez4 \
+--disable-bluez5-ofono-headset --without-fftw \
 --disable-gtk3 \
 --without-speex \
 --without-caps \
@@ -269,13 +276,17 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 "
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 "
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 "
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
-%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d --enable-orc --with-speex --enable-bluez5 \
---disable-bluez4 --disable-bluez5-ofono-headset
+%autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d \
+--enable-orc \
+--with-speex \
+--enable-bluez5 \
+--disable-bluez4 \
+--disable-bluez5-ofono-headset
 make  %{?_smp_mflags}
 popd
 %check
@@ -290,7 +301,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1634258662
+export SOURCE_DATE_EPOCH=1648873299
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-14.2/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936
