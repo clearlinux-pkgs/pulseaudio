@@ -4,7 +4,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 45
+Release  : 46
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
@@ -242,12 +242,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1648873299
+export SOURCE_DATE_EPOCH=1656426749
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
 %autogen --disable-static --with-udev-rules-dir=/usr/lib/udev/rules.d \
 --enable-orc \
 --with-speex \
@@ -301,7 +301,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1648873299
+export SOURCE_DATE_EPOCH=1656426749
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-14.2/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936
@@ -329,7 +329,7 @@ popd
 ## install_append content
 rm -rf %{buildroot}%{_datadir}/vala
 ## install_append end
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -472,6 +472,9 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/include/pulse/xmalloc.h
 /usr/lib64/cmake/PulseAudio/PulseAudioConfig.cmake
 /usr/lib64/cmake/PulseAudio/PulseAudioConfigVersion.cmake
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse-mainloop-glib.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse-simple.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse.so
 /usr/lib64/libpulse-mainloop-glib.so
 /usr/lib64/libpulse-simple.so
 /usr/lib64/libpulse.so
@@ -499,6 +502,12 @@ rm -rf %{buildroot}%{_datadir}/vala
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse-mainloop-glib.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse-mainloop-glib.so.0.0.6
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse-simple.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse-simple.so.0.1.1
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpulse.so.0.23.0
 /usr/lib64/libpulse-mainloop-glib.so.0
 /usr/lib64/libpulse-mainloop-glib.so.0.0.6
 /usr/lib64/libpulse-simple.so.0
@@ -600,7 +609,6 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/lib64/pulseaudio/libpulsecommon-14.2.so
 /usr/lib64/pulseaudio/libpulsecore-14.2.so
 /usr/lib64/pulseaudio/libpulsedsp.so
-/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)
