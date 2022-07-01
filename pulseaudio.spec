@@ -4,7 +4,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 46
+Release  : 47
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
@@ -242,7 +242,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656426749
+export SOURCE_DATE_EPOCH=1656701477
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
 export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
@@ -301,7 +301,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1656426749
+export SOURCE_DATE_EPOCH=1656701477
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-14.2/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936
@@ -609,6 +609,7 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/lib64/pulseaudio/libpulsecommon-14.2.so
 /usr/lib64/pulseaudio/libpulsecore-14.2.so
 /usr/lib64/pulseaudio/libpulsedsp.so
+/usr/share/clear/optimized-elf/other*
 
 %files lib32
 %defattr(-,root,root,-)
