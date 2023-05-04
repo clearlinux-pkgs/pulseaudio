@@ -41,6 +41,9 @@ Configure miss: mmsystem.h
 Configure miss: paccept
 Configure miss: paccept
 Configure miss: paccept
+Configure miss: pcreposix.h
+Configure miss: pcreposix.h
+Configure miss: pcreposix.h
 Configure miss: sig2str
 Configure miss: sig2str
 Configure miss: sig2str
