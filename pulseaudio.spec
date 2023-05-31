@@ -5,7 +5,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 55
+Release  : 56
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
@@ -234,7 +234,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683237782
+export SOURCE_DATE_EPOCH=1685563590
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -293,7 +293,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1683237782
+export SOURCE_DATE_EPOCH=1685563590
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936 || :
@@ -331,10 +331,6 @@ rm -rf %{buildroot}%{_datadir}/vala
 /V3/usr/bin/pacat
 /V3/usr/bin/pacmd
 /V3/usr/bin/pactl
-/V3/usr/bin/pamon
-/V3/usr/bin/paplay
-/V3/usr/bin/parec
-/V3/usr/bin/parecord
 /V3/usr/bin/pasuspender
 /V3/usr/bin/pax11publish
 /V3/usr/bin/pulseaudio
@@ -439,9 +435,6 @@ rm -rf %{buildroot}%{_datadir}/vala
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libpulse-mainloop-glib.so
-/V3/usr/lib64/libpulse-simple.so
-/V3/usr/lib64/libpulse.so
 /usr/include/pulse/cdecl.h
 /usr/include/pulse/channelmap.h
 /usr/include/pulse/context.h
@@ -499,11 +492,8 @@ rm -rf %{buildroot}%{_datadir}/vala
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libpulse-mainloop-glib.so.0
 /V3/usr/lib64/libpulse-mainloop-glib.so.0.0.6
-/V3/usr/lib64/libpulse-simple.so.0
 /V3/usr/lib64/libpulse-simple.so.0.1.1
-/V3/usr/lib64/libpulse.so.0
 /V3/usr/lib64/libpulse.so.0.23.0
 /V3/usr/lib64/pulse-14.2/modules/libalsa-util.so
 /V3/usr/lib64/pulse-14.2/modules/libbluez5-util.so
