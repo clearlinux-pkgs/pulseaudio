@@ -1,1 +1,3 @@
-rm -rf %{buildroot}%{_datadir}/vala
+rm -rf %{buildroot}*/%{_datadir}/vala
+rm -fr %{buildroot}*//usr/lib32/pulse-*
+rm -fr %{buildroot}*//usr/lib64/pulse-*

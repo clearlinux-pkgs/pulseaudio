@@ -5,21 +5,18 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 56
+Release  : 57
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
 Group    : Development/Tools
 License  : BSD-3-Clause LGPL-2.1
 Requires: pulseaudio-bin = %{version}-%{release}
-Requires: pulseaudio-config = %{version}-%{release}
 Requires: pulseaudio-data = %{version}-%{release}
 Requires: pulseaudio-lib = %{version}-%{release}
-Requires: pulseaudio-libexec = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
 Requires: pulseaudio-locales = %{version}-%{release}
 Requires: pulseaudio-man = %{version}-%{release}
-Requires: pulseaudio-services = %{version}-%{release}
 Requires: rtkit
 BuildRequires : bluez-dev
 BuildRequires : gcc-dev32
@@ -102,21 +99,10 @@ https://gitlab.freedesktop.org/pulseaudio/pulseaudio.git
 Summary: bin components for the pulseaudio package.
 Group: Binaries
 Requires: pulseaudio-data = %{version}-%{release}
-Requires: pulseaudio-libexec = %{version}-%{release}
-Requires: pulseaudio-config = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
-Requires: pulseaudio-services = %{version}-%{release}
 
 %description bin
 bin components for the pulseaudio package.
-
-
-%package config
-Summary: config components for the pulseaudio package.
-Group: Default
-
-%description config
-config components for the pulseaudio package.
 
 
 %package data
@@ -156,7 +142,6 @@ dev32 components for the pulseaudio package.
 Summary: lib components for the pulseaudio package.
 Group: Libraries
 Requires: pulseaudio-data = %{version}-%{release}
-Requires: pulseaudio-libexec = %{version}-%{release}
 Requires: pulseaudio-license = %{version}-%{release}
 
 %description lib
@@ -171,16 +156,6 @@ Requires: pulseaudio-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the pulseaudio package.
-
-
-%package libexec
-Summary: libexec components for the pulseaudio package.
-Group: Default
-Requires: pulseaudio-config = %{version}-%{release}
-Requires: pulseaudio-license = %{version}-%{release}
-
-%description libexec
-libexec components for the pulseaudio package.
 
 
 %package license
@@ -207,21 +182,12 @@ Group: Default
 man components for the pulseaudio package.
 
 
-%package services
-Summary: services components for the pulseaudio package.
-Group: Systemd services
-Requires: systemd
-
-%description services
-services components for the pulseaudio package.
-
-
 %prep
 %setup -q -n pulseaudio-14.2
 cd %{_builddir}/pulseaudio-14.2
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
 pushd ..
 cp -a pulseaudio-14.2 build32
 popd
@@ -234,7 +200,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1685563590
+export SOURCE_DATE_EPOCH=1694735502
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -293,7 +259,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1685563590
+export SOURCE_DATE_EPOCH=1694735502
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936 || :
@@ -318,8 +284,108 @@ pushd ../buildavx2/
 popd
 %make_install
 %find_lang pulseaudio
+## Remove excluded files
+rm -f %{buildroot}*/usr/bin/esdcompat
+rm -f %{buildroot}*/usr/bin/pa-info
+rm -f %{buildroot}*/usr/bin/pacmd
+rm -f %{buildroot}*/usr/bin/pasuspender
+rm -f %{buildroot}*/usr/bin/pax11publish
+rm -f %{buildroot}*/usr/bin/pulseaudio
+rm -f %{buildroot}*/usr/bin/qpaeq
+rm -f %{buildroot}*/usr/bin/start-pulseaudio-x11
+rm -f %{buildroot}*/usr/lib/systemd/user/pulseaudio.service
+rm -f %{buildroot}*/usr/lib/systemd/user/pulseaudio.socket
+rm -f %{buildroot}*/usr/lib/udev/rules.d/90-pulseaudio.rules
+rm -f %{buildroot}*/usr/lib32/pulseaudio/libpulsecommon-*
+rm -f %{buildroot}*/usr/lib32/pulseaudio/libpulsecore-*
+rm -f %{buildroot}*/usr/lib32/pulseaudio/libpulsedsp.so
+rm -f %{buildroot}*/usr/lib64/pulseaudio/libpulsecommon-*
+rm -f %{buildroot}*/usr/lib64/pulseaudio/libpulsecore-*
+rm -f %{buildroot}*/usr/lib64/pulseaudio/libpulsedsp.so
+rm -f %{buildroot}*/usr/libexec/pulse/gsettings-helper
+rm -f %{buildroot}*/usr/share/GConf/gsettings/pulseaudio.convert
+rm -f %{buildroot}*/usr/share/bash-completion/completions/pacmd
+rm -f %{buildroot}*/usr/share/bash-completion/completions/pasuspender
+rm -f %{buildroot}*/usr/share/bash-completion/completions/pulseaudio
+rm -f %{buildroot}*/usr/share/dbus-1/system.d/pulseaudio-system.conf
+rm -f %{buildroot}*/usr/share/glib-2.0/schemas/org.freedesktop.pulseaudio.gschema.xml
+rm -f %{buildroot}*/usr/share/man/man1/esdcompat.1
+rm -f %{buildroot}*/usr/share/man/man1/pacmd.1
+rm -f %{buildroot}*/usr/share/man/man1/pasuspender.1
+rm -f %{buildroot}*/usr/share/man/man1/pax11publish.1
+rm -f %{buildroot}*/usr/share/man/man1/pulseaudio.1
+rm -f %{buildroot}*/usr/share/man/man1/start-pulseaudio-x11.1
+rm -f %{buildroot}*/usr/share/man/man5/default.pa.5
+rm -f %{buildroot}*/usr/share/man/man5/pulse-cli-syntax.5
+rm -f %{buildroot}*/usr/share/man/man5/pulse-daemon.conf.5
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-aux.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-dock-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-fm.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-front-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-headphone-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-headset-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic-always.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-linein.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic-line.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic.conf.common
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-rear-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-tvtuner.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input-video.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-input.conf.common
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones-2.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output-lineout.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output-mono.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/analog-output.conf.common
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-0.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-1.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-2.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-3.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-4.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-5.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-6.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-7.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/iec958-stereo-input.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/iec958-stereo-output.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/steelseries-arctis-output-chat-common.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/steelseries-arctis-output-game-common.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-input.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-output-mono.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-output-stereo.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/audigy.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/cmedia-high-speed-true-hdaudio.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/default.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/dell-dock-tb16-usb-audio.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/force-speaker-and-int-mic.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/force-speaker.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/kinect-audio.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/maudio-fasttrack-pro.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-audio4dj.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-audio8dj.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-korecontroller.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio10.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio2.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio6.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktorkontrol-s4.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/sb-omni-surround-5.1.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/steelseries-arctis-common-usb-audio.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/alsa-mixer/profile-sets/usb-gaming-headset.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/daemon.conf
+rm -f %{buildroot}*/usr/share/pulseaudio/default.pa
+rm -f %{buildroot}*/usr/share/pulseaudio/system.pa
+rm -f %{buildroot}*/usr/share/xdg/autostart/pulseaudio.desktop
+rm -f %{buildroot}*/usr/share/xdg/autostart/pulseaudio.desktop
+rm -f %{buildroot}*/usr/share/zsh/site-functions/_pulseaudio
 ## install_append content
-rm -rf %{buildroot}%{_datadir}/vala
+rm -rf %{buildroot}*/%{_datadir}/vala
+rm -fr %{buildroot}*//usr/lib32/pulse-*
+rm -fr %{buildroot}*//usr/lib64/pulse-*
 ## install_append end
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
@@ -329,109 +395,24 @@ rm -rf %{buildroot}%{_datadir}/vala
 %files bin
 %defattr(-,root,root,-)
 /V3/usr/bin/pacat
-/V3/usr/bin/pacmd
 /V3/usr/bin/pactl
-/V3/usr/bin/pasuspender
-/V3/usr/bin/pax11publish
-/V3/usr/bin/pulseaudio
-/usr/bin/esdcompat
-/usr/bin/pa-info
 /usr/bin/pacat
-/usr/bin/pacmd
 /usr/bin/pactl
 /usr/bin/padsp
 /usr/bin/pamon
 /usr/bin/paplay
 /usr/bin/parec
 /usr/bin/parecord
-/usr/bin/pasuspender
-/usr/bin/pax11publish
-/usr/bin/pulseaudio
-/usr/bin/qpaeq
-/usr/bin/start-pulseaudio-x11
-
-%files config
-%defattr(-,root,root,-)
-/usr/lib/udev/rules.d/90-pulseaudio.rules
 
 %files data
 %defattr(-,root,root,-)
-/usr/share/GConf/gsettings/pulseaudio.convert
 /usr/share/bash-completion/completions/pacat
-/usr/share/bash-completion/completions/pacmd
 /usr/share/bash-completion/completions/pactl
 /usr/share/bash-completion/completions/padsp
 /usr/share/bash-completion/completions/paplay
 /usr/share/bash-completion/completions/parec
 /usr/share/bash-completion/completions/parecord
-/usr/share/bash-completion/completions/pasuspender
-/usr/share/bash-completion/completions/pulseaudio
-/usr/share/dbus-1/system.d/pulseaudio-system.conf
-/usr/share/glib-2.0/schemas/org.freedesktop.pulseaudio.gschema.xml
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-aux.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-dock-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-fm.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-front-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-headphone-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-headset-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic-always.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-linein.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic-line.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic.conf.common
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-rear-mic.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-tvtuner.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input-video.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-input.conf.common
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones-2.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output-lineout.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output-mono.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output.conf
-/usr/share/pulseaudio/alsa-mixer/paths/analog-output.conf.common
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-0.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-1.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-2.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-3.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-4.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-5.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-6.conf
-/usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-7.conf
-/usr/share/pulseaudio/alsa-mixer/paths/iec958-stereo-input.conf
-/usr/share/pulseaudio/alsa-mixer/paths/iec958-stereo-output.conf
-/usr/share/pulseaudio/alsa-mixer/paths/steelseries-arctis-output-chat-common.conf
-/usr/share/pulseaudio/alsa-mixer/paths/steelseries-arctis-output-game-common.conf
-/usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-input.conf
-/usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-output-mono.conf
-/usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-output-stereo.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/audigy.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/cmedia-high-speed-true-hdaudio.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/default.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/dell-dock-tb16-usb-audio.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/force-speaker-and-int-mic.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/force-speaker.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/kinect-audio.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/maudio-fasttrack-pro.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-audio4dj.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-audio8dj.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-korecontroller.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio10.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio2.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio6.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktorkontrol-s4.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/sb-omni-surround-5.1.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/steelseries-arctis-common-usb-audio.conf
-/usr/share/pulseaudio/alsa-mixer/profile-sets/usb-gaming-headset.conf
 /usr/share/pulseaudio/client.conf
-/usr/share/pulseaudio/daemon.conf
-/usr/share/pulseaudio/default.pa
-/usr/share/pulseaudio/system.pa
-/usr/share/xdg/autostart/pulseaudio.desktop
-/usr/share/zsh/site-functions/_pulseaudio
 
 %files dev
 %defattr(-,root,root,-)
@@ -495,202 +476,12 @@ rm -rf %{buildroot}%{_datadir}/vala
 /V3/usr/lib64/libpulse-mainloop-glib.so.0.0.6
 /V3/usr/lib64/libpulse-simple.so.0.1.1
 /V3/usr/lib64/libpulse.so.0.23.0
-/V3/usr/lib64/pulse-14.2/modules/libalsa-util.so
-/V3/usr/lib64/pulse-14.2/modules/libbluez5-util.so
-/V3/usr/lib64/pulse-14.2/modules/libcli.so
-/V3/usr/lib64/pulse-14.2/modules/liboss-util.so
-/V3/usr/lib64/pulse-14.2/modules/libprotocol-cli.so
-/V3/usr/lib64/pulse-14.2/modules/libprotocol-esound.so
-/V3/usr/lib64/pulse-14.2/modules/libprotocol-http.so
-/V3/usr/lib64/pulse-14.2/modules/libprotocol-native.so
-/V3/usr/lib64/pulse-14.2/modules/libprotocol-simple.so
-/V3/usr/lib64/pulse-14.2/modules/libraop.so
-/V3/usr/lib64/pulse-14.2/modules/librtp.so
-/V3/usr/lib64/pulse-14.2/modules/module-allow-passthrough.so
-/V3/usr/lib64/pulse-14.2/modules/module-alsa-card.so
-/V3/usr/lib64/pulse-14.2/modules/module-alsa-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-alsa-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-always-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-always-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-augment-properties.so
-/V3/usr/lib64/pulse-14.2/modules/module-bluetooth-discover.so
-/V3/usr/lib64/pulse-14.2/modules/module-bluetooth-policy.so
-/V3/usr/lib64/pulse-14.2/modules/module-bluez5-device.so
-/V3/usr/lib64/pulse-14.2/modules/module-bluez5-discover.so
-/V3/usr/lib64/pulse-14.2/modules/module-card-restore.so
-/V3/usr/lib64/pulse-14.2/modules/module-cli-protocol-tcp.so
-/V3/usr/lib64/pulse-14.2/modules/module-cli-protocol-unix.so
-/V3/usr/lib64/pulse-14.2/modules/module-cli.so
-/V3/usr/lib64/pulse-14.2/modules/module-combine-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-combine.so
-/V3/usr/lib64/pulse-14.2/modules/module-console-kit.so
-/V3/usr/lib64/pulse-14.2/modules/module-dbus-protocol.so
-/V3/usr/lib64/pulse-14.2/modules/module-default-device-restore.so
-/V3/usr/lib64/pulse-14.2/modules/module-detect.so
-/V3/usr/lib64/pulse-14.2/modules/module-device-manager.so
-/V3/usr/lib64/pulse-14.2/modules/module-device-restore.so
-/V3/usr/lib64/pulse-14.2/modules/module-echo-cancel.so
-/V3/usr/lib64/pulse-14.2/modules/module-equalizer-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-esound-compat-spawnfd.so
-/V3/usr/lib64/pulse-14.2/modules/module-esound-compat-spawnpid.so
-/V3/usr/lib64/pulse-14.2/modules/module-esound-protocol-tcp.so
-/V3/usr/lib64/pulse-14.2/modules/module-esound-protocol-unix.so
-/V3/usr/lib64/pulse-14.2/modules/module-esound-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-filter-apply.so
-/V3/usr/lib64/pulse-14.2/modules/module-filter-heuristics.so
-/V3/usr/lib64/pulse-14.2/modules/module-gsettings.so
-/V3/usr/lib64/pulse-14.2/modules/module-hal-detect.so
-/V3/usr/lib64/pulse-14.2/modules/module-http-protocol-tcp.so
-/V3/usr/lib64/pulse-14.2/modules/module-http-protocol-unix.so
-/V3/usr/lib64/pulse-14.2/modules/module-intended-roles.so
-/V3/usr/lib64/pulse-14.2/modules/module-ladspa-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-loopback.so
-/V3/usr/lib64/pulse-14.2/modules/module-match.so
-/V3/usr/lib64/pulse-14.2/modules/module-mmkbd-evdev.so
-/V3/usr/lib64/pulse-14.2/modules/module-native-protocol-fd.so
-/V3/usr/lib64/pulse-14.2/modules/module-native-protocol-tcp.so
-/V3/usr/lib64/pulse-14.2/modules/module-native-protocol-unix.so
-/V3/usr/lib64/pulse-14.2/modules/module-null-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-null-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-oss.so
-/V3/usr/lib64/pulse-14.2/modules/module-pipe-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-pipe-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-position-event-sounds.so
-/V3/usr/lib64/pulse-14.2/modules/module-raop-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-remap-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-remap-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-rescue-streams.so
-/V3/usr/lib64/pulse-14.2/modules/module-role-cork.so
-/V3/usr/lib64/pulse-14.2/modules/module-role-ducking.so
-/V3/usr/lib64/pulse-14.2/modules/module-rtp-recv.so
-/V3/usr/lib64/pulse-14.2/modules/module-rtp-send.so
-/V3/usr/lib64/pulse-14.2/modules/module-rygel-media-server.so
-/V3/usr/lib64/pulse-14.2/modules/module-simple-protocol-tcp.so
-/V3/usr/lib64/pulse-14.2/modules/module-simple-protocol-unix.so
-/V3/usr/lib64/pulse-14.2/modules/module-sine-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-sine.so
-/V3/usr/lib64/pulse-14.2/modules/module-stream-restore.so
-/V3/usr/lib64/pulse-14.2/modules/module-suspend-on-idle.so
-/V3/usr/lib64/pulse-14.2/modules/module-switch-on-connect.so
-/V3/usr/lib64/pulse-14.2/modules/module-switch-on-port-available.so
-/V3/usr/lib64/pulse-14.2/modules/module-systemd-login.so
-/V3/usr/lib64/pulse-14.2/modules/module-tunnel-sink-new.so
-/V3/usr/lib64/pulse-14.2/modules/module-tunnel-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-tunnel-source-new.so
-/V3/usr/lib64/pulse-14.2/modules/module-tunnel-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-udev-detect.so
-/V3/usr/lib64/pulse-14.2/modules/module-virtual-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-virtual-source.so
-/V3/usr/lib64/pulse-14.2/modules/module-virtual-surround-sink.so
-/V3/usr/lib64/pulse-14.2/modules/module-volume-restore.so
-/V3/usr/lib64/pulse-14.2/modules/module-x11-bell.so
-/V3/usr/lib64/pulse-14.2/modules/module-x11-cork-request.so
-/V3/usr/lib64/pulse-14.2/modules/module-x11-publish.so
-/V3/usr/lib64/pulse-14.2/modules/module-x11-xsmp.so
-/V3/usr/lib64/pulseaudio/libpulsecommon-14.2.so
-/V3/usr/lib64/pulseaudio/libpulsecore-14.2.so
-/V3/usr/lib64/pulseaudio/libpulsedsp.so
 /usr/lib64/libpulse-mainloop-glib.so.0
 /usr/lib64/libpulse-mainloop-glib.so.0.0.6
 /usr/lib64/libpulse-simple.so.0
 /usr/lib64/libpulse-simple.so.0.1.1
 /usr/lib64/libpulse.so.0
 /usr/lib64/libpulse.so.0.23.0
-/usr/lib64/pulse-14.2/modules/libalsa-util.so
-/usr/lib64/pulse-14.2/modules/libbluez5-util.so
-/usr/lib64/pulse-14.2/modules/libcli.so
-/usr/lib64/pulse-14.2/modules/liboss-util.so
-/usr/lib64/pulse-14.2/modules/libprotocol-cli.so
-/usr/lib64/pulse-14.2/modules/libprotocol-esound.so
-/usr/lib64/pulse-14.2/modules/libprotocol-http.so
-/usr/lib64/pulse-14.2/modules/libprotocol-native.so
-/usr/lib64/pulse-14.2/modules/libprotocol-simple.so
-/usr/lib64/pulse-14.2/modules/libraop.so
-/usr/lib64/pulse-14.2/modules/librtp.so
-/usr/lib64/pulse-14.2/modules/module-allow-passthrough.so
-/usr/lib64/pulse-14.2/modules/module-alsa-card.so
-/usr/lib64/pulse-14.2/modules/module-alsa-sink.so
-/usr/lib64/pulse-14.2/modules/module-alsa-source.so
-/usr/lib64/pulse-14.2/modules/module-always-sink.so
-/usr/lib64/pulse-14.2/modules/module-always-source.so
-/usr/lib64/pulse-14.2/modules/module-augment-properties.so
-/usr/lib64/pulse-14.2/modules/module-bluetooth-discover.so
-/usr/lib64/pulse-14.2/modules/module-bluetooth-policy.so
-/usr/lib64/pulse-14.2/modules/module-bluez5-device.so
-/usr/lib64/pulse-14.2/modules/module-bluez5-discover.so
-/usr/lib64/pulse-14.2/modules/module-card-restore.so
-/usr/lib64/pulse-14.2/modules/module-cli-protocol-tcp.so
-/usr/lib64/pulse-14.2/modules/module-cli-protocol-unix.so
-/usr/lib64/pulse-14.2/modules/module-cli.so
-/usr/lib64/pulse-14.2/modules/module-combine-sink.so
-/usr/lib64/pulse-14.2/modules/module-combine.so
-/usr/lib64/pulse-14.2/modules/module-console-kit.so
-/usr/lib64/pulse-14.2/modules/module-dbus-protocol.so
-/usr/lib64/pulse-14.2/modules/module-default-device-restore.so
-/usr/lib64/pulse-14.2/modules/module-detect.so
-/usr/lib64/pulse-14.2/modules/module-device-manager.so
-/usr/lib64/pulse-14.2/modules/module-device-restore.so
-/usr/lib64/pulse-14.2/modules/module-echo-cancel.so
-/usr/lib64/pulse-14.2/modules/module-equalizer-sink.so
-/usr/lib64/pulse-14.2/modules/module-esound-compat-spawnfd.so
-/usr/lib64/pulse-14.2/modules/module-esound-compat-spawnpid.so
-/usr/lib64/pulse-14.2/modules/module-esound-protocol-tcp.so
-/usr/lib64/pulse-14.2/modules/module-esound-protocol-unix.so
-/usr/lib64/pulse-14.2/modules/module-esound-sink.so
-/usr/lib64/pulse-14.2/modules/module-filter-apply.so
-/usr/lib64/pulse-14.2/modules/module-filter-heuristics.so
-/usr/lib64/pulse-14.2/modules/module-gsettings.so
-/usr/lib64/pulse-14.2/modules/module-hal-detect.so
-/usr/lib64/pulse-14.2/modules/module-http-protocol-tcp.so
-/usr/lib64/pulse-14.2/modules/module-http-protocol-unix.so
-/usr/lib64/pulse-14.2/modules/module-intended-roles.so
-/usr/lib64/pulse-14.2/modules/module-ladspa-sink.so
-/usr/lib64/pulse-14.2/modules/module-loopback.so
-/usr/lib64/pulse-14.2/modules/module-match.so
-/usr/lib64/pulse-14.2/modules/module-mmkbd-evdev.so
-/usr/lib64/pulse-14.2/modules/module-native-protocol-fd.so
-/usr/lib64/pulse-14.2/modules/module-native-protocol-tcp.so
-/usr/lib64/pulse-14.2/modules/module-native-protocol-unix.so
-/usr/lib64/pulse-14.2/modules/module-null-sink.so
-/usr/lib64/pulse-14.2/modules/module-null-source.so
-/usr/lib64/pulse-14.2/modules/module-oss.so
-/usr/lib64/pulse-14.2/modules/module-pipe-sink.so
-/usr/lib64/pulse-14.2/modules/module-pipe-source.so
-/usr/lib64/pulse-14.2/modules/module-position-event-sounds.so
-/usr/lib64/pulse-14.2/modules/module-raop-sink.so
-/usr/lib64/pulse-14.2/modules/module-remap-sink.so
-/usr/lib64/pulse-14.2/modules/module-remap-source.so
-/usr/lib64/pulse-14.2/modules/module-rescue-streams.so
-/usr/lib64/pulse-14.2/modules/module-role-cork.so
-/usr/lib64/pulse-14.2/modules/module-role-ducking.so
-/usr/lib64/pulse-14.2/modules/module-rtp-recv.so
-/usr/lib64/pulse-14.2/modules/module-rtp-send.so
-/usr/lib64/pulse-14.2/modules/module-rygel-media-server.so
-/usr/lib64/pulse-14.2/modules/module-simple-protocol-tcp.so
-/usr/lib64/pulse-14.2/modules/module-simple-protocol-unix.so
-/usr/lib64/pulse-14.2/modules/module-sine-source.so
-/usr/lib64/pulse-14.2/modules/module-sine.so
-/usr/lib64/pulse-14.2/modules/module-stream-restore.so
-/usr/lib64/pulse-14.2/modules/module-suspend-on-idle.so
-/usr/lib64/pulse-14.2/modules/module-switch-on-connect.so
-/usr/lib64/pulse-14.2/modules/module-switch-on-port-available.so
-/usr/lib64/pulse-14.2/modules/module-systemd-login.so
-/usr/lib64/pulse-14.2/modules/module-tunnel-sink-new.so
-/usr/lib64/pulse-14.2/modules/module-tunnel-sink.so
-/usr/lib64/pulse-14.2/modules/module-tunnel-source-new.so
-/usr/lib64/pulse-14.2/modules/module-tunnel-source.so
-/usr/lib64/pulse-14.2/modules/module-udev-detect.so
-/usr/lib64/pulse-14.2/modules/module-virtual-sink.so
-/usr/lib64/pulse-14.2/modules/module-virtual-source.so
-/usr/lib64/pulse-14.2/modules/module-virtual-surround-sink.so
-/usr/lib64/pulse-14.2/modules/module-volume-restore.so
-/usr/lib64/pulse-14.2/modules/module-x11-bell.so
-/usr/lib64/pulse-14.2/modules/module-x11-cork-request.so
-/usr/lib64/pulse-14.2/modules/module-x11-publish.so
-/usr/lib64/pulse-14.2/modules/module-x11-xsmp.so
-/usr/lib64/pulseaudio/libpulsecommon-14.2.so
-/usr/lib64/pulseaudio/libpulsecore-14.2.so
-/usr/lib64/pulseaudio/libpulsedsp.so
 
 %files lib32
 %defattr(-,root,root,-)
@@ -700,100 +491,6 @@ rm -rf %{buildroot}%{_datadir}/vala
 /usr/lib32/libpulse-simple.so.0.1.1
 /usr/lib32/libpulse.so.0
 /usr/lib32/libpulse.so.0.23.0
-/usr/lib32/pulse-14.2/modules/libalsa-util.so
-/usr/lib32/pulse-14.2/modules/libcli.so
-/usr/lib32/pulse-14.2/modules/liboss-util.so
-/usr/lib32/pulse-14.2/modules/libprotocol-cli.so
-/usr/lib32/pulse-14.2/modules/libprotocol-esound.so
-/usr/lib32/pulse-14.2/modules/libprotocol-http.so
-/usr/lib32/pulse-14.2/modules/libprotocol-native.so
-/usr/lib32/pulse-14.2/modules/libprotocol-simple.so
-/usr/lib32/pulse-14.2/modules/libraop.so
-/usr/lib32/pulse-14.2/modules/librtp.so
-/usr/lib32/pulse-14.2/modules/module-allow-passthrough.so
-/usr/lib32/pulse-14.2/modules/module-alsa-card.so
-/usr/lib32/pulse-14.2/modules/module-alsa-sink.so
-/usr/lib32/pulse-14.2/modules/module-alsa-source.so
-/usr/lib32/pulse-14.2/modules/module-always-sink.so
-/usr/lib32/pulse-14.2/modules/module-always-source.so
-/usr/lib32/pulse-14.2/modules/module-augment-properties.so
-/usr/lib32/pulse-14.2/modules/module-card-restore.so
-/usr/lib32/pulse-14.2/modules/module-cli-protocol-tcp.so
-/usr/lib32/pulse-14.2/modules/module-cli-protocol-unix.so
-/usr/lib32/pulse-14.2/modules/module-cli.so
-/usr/lib32/pulse-14.2/modules/module-combine-sink.so
-/usr/lib32/pulse-14.2/modules/module-combine.so
-/usr/lib32/pulse-14.2/modules/module-console-kit.so
-/usr/lib32/pulse-14.2/modules/module-dbus-protocol.so
-/usr/lib32/pulse-14.2/modules/module-default-device-restore.so
-/usr/lib32/pulse-14.2/modules/module-detect.so
-/usr/lib32/pulse-14.2/modules/module-device-manager.so
-/usr/lib32/pulse-14.2/modules/module-device-restore.so
-/usr/lib32/pulse-14.2/modules/module-echo-cancel.so
-/usr/lib32/pulse-14.2/modules/module-esound-compat-spawnfd.so
-/usr/lib32/pulse-14.2/modules/module-esound-compat-spawnpid.so
-/usr/lib32/pulse-14.2/modules/module-esound-protocol-tcp.so
-/usr/lib32/pulse-14.2/modules/module-esound-protocol-unix.so
-/usr/lib32/pulse-14.2/modules/module-esound-sink.so
-/usr/lib32/pulse-14.2/modules/module-filter-apply.so
-/usr/lib32/pulse-14.2/modules/module-filter-heuristics.so
-/usr/lib32/pulse-14.2/modules/module-gsettings.so
-/usr/lib32/pulse-14.2/modules/module-hal-detect.so
-/usr/lib32/pulse-14.2/modules/module-http-protocol-tcp.so
-/usr/lib32/pulse-14.2/modules/module-http-protocol-unix.so
-/usr/lib32/pulse-14.2/modules/module-intended-roles.so
-/usr/lib32/pulse-14.2/modules/module-ladspa-sink.so
-/usr/lib32/pulse-14.2/modules/module-loopback.so
-/usr/lib32/pulse-14.2/modules/module-match.so
-/usr/lib32/pulse-14.2/modules/module-mmkbd-evdev.so
-/usr/lib32/pulse-14.2/modules/module-native-protocol-fd.so
-/usr/lib32/pulse-14.2/modules/module-native-protocol-tcp.so
-/usr/lib32/pulse-14.2/modules/module-native-protocol-unix.so
-/usr/lib32/pulse-14.2/modules/module-null-sink.so
-/usr/lib32/pulse-14.2/modules/module-null-source.so
-/usr/lib32/pulse-14.2/modules/module-oss.so
-/usr/lib32/pulse-14.2/modules/module-pipe-sink.so
-/usr/lib32/pulse-14.2/modules/module-pipe-source.so
-/usr/lib32/pulse-14.2/modules/module-position-event-sounds.so
-/usr/lib32/pulse-14.2/modules/module-raop-sink.so
-/usr/lib32/pulse-14.2/modules/module-remap-sink.so
-/usr/lib32/pulse-14.2/modules/module-remap-source.so
-/usr/lib32/pulse-14.2/modules/module-rescue-streams.so
-/usr/lib32/pulse-14.2/modules/module-role-cork.so
-/usr/lib32/pulse-14.2/modules/module-role-ducking.so
-/usr/lib32/pulse-14.2/modules/module-rtp-recv.so
-/usr/lib32/pulse-14.2/modules/module-rtp-send.so
-/usr/lib32/pulse-14.2/modules/module-rygel-media-server.so
-/usr/lib32/pulse-14.2/modules/module-simple-protocol-tcp.so
-/usr/lib32/pulse-14.2/modules/module-simple-protocol-unix.so
-/usr/lib32/pulse-14.2/modules/module-sine-source.so
-/usr/lib32/pulse-14.2/modules/module-sine.so
-/usr/lib32/pulse-14.2/modules/module-stream-restore.so
-/usr/lib32/pulse-14.2/modules/module-suspend-on-idle.so
-/usr/lib32/pulse-14.2/modules/module-switch-on-connect.so
-/usr/lib32/pulse-14.2/modules/module-switch-on-port-available.so
-/usr/lib32/pulse-14.2/modules/module-systemd-login.so
-/usr/lib32/pulse-14.2/modules/module-tunnel-sink-new.so
-/usr/lib32/pulse-14.2/modules/module-tunnel-sink.so
-/usr/lib32/pulse-14.2/modules/module-tunnel-source-new.so
-/usr/lib32/pulse-14.2/modules/module-tunnel-source.so
-/usr/lib32/pulse-14.2/modules/module-udev-detect.so
-/usr/lib32/pulse-14.2/modules/module-virtual-sink.so
-/usr/lib32/pulse-14.2/modules/module-virtual-source.so
-/usr/lib32/pulse-14.2/modules/module-virtual-surround-sink.so
-/usr/lib32/pulse-14.2/modules/module-volume-restore.so
-/usr/lib32/pulse-14.2/modules/module-x11-bell.so
-/usr/lib32/pulse-14.2/modules/module-x11-cork-request.so
-/usr/lib32/pulse-14.2/modules/module-x11-publish.so
-/usr/lib32/pulse-14.2/modules/module-x11-xsmp.so
-/usr/lib32/pulseaudio/libpulsecommon-14.2.so
-/usr/lib32/pulseaudio/libpulsecore-14.2.so
-/usr/lib32/pulseaudio/libpulsedsp.so
-
-%files libexec
-%defattr(-,root,root,-)
-/V3/usr/libexec/pulse/gsettings-helper
-/usr/libexec/pulse/gsettings-helper
 
 %files license
 %defattr(0644,root,root,0755)
@@ -802,28 +499,14 @@ rm -rf %{buildroot}%{_datadir}/vala
 
 %files man
 %defattr(0644,root,root,0755)
-/usr/share/man/man1/esdcompat.1
 /usr/share/man/man1/pacat.1
-/usr/share/man/man1/pacmd.1
 /usr/share/man/man1/pactl.1
 /usr/share/man/man1/padsp.1
 /usr/share/man/man1/pamon.1
 /usr/share/man/man1/paplay.1
 /usr/share/man/man1/parec.1
 /usr/share/man/man1/parecord.1
-/usr/share/man/man1/pasuspender.1
-/usr/share/man/man1/pax11publish.1
-/usr/share/man/man1/pulseaudio.1
-/usr/share/man/man1/start-pulseaudio-x11.1
-/usr/share/man/man5/default.pa.5
-/usr/share/man/man5/pulse-cli-syntax.5
 /usr/share/man/man5/pulse-client.conf.5
-/usr/share/man/man5/pulse-daemon.conf.5
-
-%files services
-%defattr(-,root,root,-)
-/usr/lib/systemd/user/pulseaudio.service
-/usr/lib/systemd/user/pulseaudio.socket
 
 %files locales -f pulseaudio.lang
 %defattr(-,root,root,-)
