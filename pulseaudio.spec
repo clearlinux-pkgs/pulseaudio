@@ -5,7 +5,7 @@
 #
 Name     : pulseaudio
 Version  : 14.2
-Release  : 57
+Release  : 58
 URL      : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Source0  : https://freedesktop.org/software/pulseaudio/releases/pulseaudio-14.2.tar.xz
 Summary  : PulseAudio Simplified Synchronous Client Interface
@@ -200,7 +200,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1694735502
+export SOURCE_DATE_EPOCH=1695079103
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
@@ -259,7 +259,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1694735502
+export SOURCE_DATE_EPOCH=1695079103
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pulseaudio
 cp %{_builddir}/pulseaudio-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/pulseaudio/146b824cf04e121da67545caff4ede65bbbb3936 || :
@@ -296,12 +296,6 @@ rm -f %{buildroot}*/usr/bin/start-pulseaudio-x11
 rm -f %{buildroot}*/usr/lib/systemd/user/pulseaudio.service
 rm -f %{buildroot}*/usr/lib/systemd/user/pulseaudio.socket
 rm -f %{buildroot}*/usr/lib/udev/rules.d/90-pulseaudio.rules
-rm -f %{buildroot}*/usr/lib32/pulseaudio/libpulsecommon-*
-rm -f %{buildroot}*/usr/lib32/pulseaudio/libpulsecore-*
-rm -f %{buildroot}*/usr/lib32/pulseaudio/libpulsedsp.so
-rm -f %{buildroot}*/usr/lib64/pulseaudio/libpulsecommon-*
-rm -f %{buildroot}*/usr/lib64/pulseaudio/libpulsecore-*
-rm -f %{buildroot}*/usr/lib64/pulseaudio/libpulsedsp.so
 rm -f %{buildroot}*/usr/libexec/pulse/gsettings-helper
 rm -f %{buildroot}*/usr/share/GConf/gsettings/pulseaudio.convert
 rm -f %{buildroot}*/usr/share/bash-completion/completions/pacmd
@@ -476,12 +470,18 @@ rm -fr %{buildroot}*//usr/lib64/pulse-*
 /V3/usr/lib64/libpulse-mainloop-glib.so.0.0.6
 /V3/usr/lib64/libpulse-simple.so.0.1.1
 /V3/usr/lib64/libpulse.so.0.23.0
+/V3/usr/lib64/pulseaudio/libpulsecommon-14.2.so
+/V3/usr/lib64/pulseaudio/libpulsecore-14.2.so
+/V3/usr/lib64/pulseaudio/libpulsedsp.so
 /usr/lib64/libpulse-mainloop-glib.so.0
 /usr/lib64/libpulse-mainloop-glib.so.0.0.6
 /usr/lib64/libpulse-simple.so.0
 /usr/lib64/libpulse-simple.so.0.1.1
 /usr/lib64/libpulse.so.0
 /usr/lib64/libpulse.so.0.23.0
+/usr/lib64/pulseaudio/libpulsecommon-14.2.so
+/usr/lib64/pulseaudio/libpulsecore-14.2.so
+/usr/lib64/pulseaudio/libpulsedsp.so
 
 %files lib32
 %defattr(-,root,root,-)
@@ -491,6 +491,9 @@ rm -fr %{buildroot}*//usr/lib64/pulse-*
 /usr/lib32/libpulse-simple.so.0.1.1
 /usr/lib32/libpulse.so.0
 /usr/lib32/libpulse.so.0.23.0
+/usr/lib32/pulseaudio/libpulsecommon-14.2.so
+/usr/lib32/pulseaudio/libpulsecore-14.2.so
+/usr/lib32/pulseaudio/libpulsedsp.so
 
 %files license
 %defattr(0644,root,root,0755)

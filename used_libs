@@ -1,3 +1,4 @@
+ld-linux-x86-64.so.2
 libX11.so.6
 libXtst.so.6
 libc.so.6
@@ -5,7 +6,9 @@ libcap.so.2
 libdbus-1.so.3
 libgdbm.so.6
 libglib-2.0.so.0
+libltdl.so.7
 libm.so.6
-libpulsecommon-14.2.so
+liborc-0.4.so.0
 libsndfile.so.1
+libspeexdsp.so.1
 libsystemd.so.0

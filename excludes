@@ -11,12 +11,6 @@
 /usr/lib/systemd/user/pulseaudio.service
 /usr/lib/systemd/user/pulseaudio.socket
 /usr/lib/udev/rules.d/90-pulseaudio.rules
-/usr/lib32/pulseaudio/libpulsecommon-*
-/usr/lib32/pulseaudio/libpulsecore-*
-/usr/lib32/pulseaudio/libpulsedsp.so
-/usr/lib64/pulseaudio/libpulsecommon-*
-/usr/lib64/pulseaudio/libpulsecore-*
-/usr/lib64/pulseaudio/libpulsedsp.so
 /usr/libexec/pulse/gsettings-helper
 /usr/share/GConf/gsettings/pulseaudio.convert
 /usr/share/bash-completion/completions/pacmd
