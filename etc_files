@@ -1,0 +1,16 @@
+/etc/:
+/etc/pulse:
+/etc/xdg/Xwayland-session.d:
+/etc/xdg/autostart:
+/etc/xdg:
+00-pulseaudio-x11
+Xwayland-session.d
+autostart
+client.conf
+daemon.conf
+default.pa
+pulse
+pulseaudio.desktop
+system.pa
+xdg
+xdg' ']'

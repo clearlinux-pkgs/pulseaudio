@@ -1,3 +1,303 @@
+PulseAudio 17.0
+
+Changes at a glance:
+ * Notes for end users
+   *  Updates to ALSA UCM-based setups
+   *  Battery level indication to Bluetooth devices
+   *  Support for the Bluetooth FastStream codec
+   *  webrtc-audio-processing dependency updated
+   *  Trigger role groups added to module-role-cork
+   *  XDG base directory spec for profile-set loading
+ * Notes for application developers
+   * PA_RATE_MAX increased
+ * Notes for packagers
+   * webrtc-audio-processing dependency updated
+
+Contributors
+
+Alistair Leslie-Hughes
+Alper Nebi Yasak
+Arun Raghavan
+Asier Sarasua Garmendia
+Ataberk Özen
+Balázs Meskó
+Biswapriyo Nath
+Dylan Van Assche
+Eero Nurkkala
+Ettore Atalan
+Fabrice Fontaine
+Fran Diéguez
+Georg Chini
+Gioele Barabucci
+Gogo Gogsi
+Hector Martin
+Hugo Carvalho
+Hui Wang
+Igor V. Kovalenko
+Jaechul Lee
+Jan Kuparinen
+Jan Palus
+Jaroslav Kysela
+Jiri Grönroos
+Joachim Philipp
+Jordi Mas
+Marijn Suijten
+Mart Raudsepp
+Nicolas Cavallari
+Peter Meerwald-Stadler
+Philip Goto
+Rosen Penev
+Rudi Heitbaum
+Sabri Ünal
+Sean Greenslade
+Seong-ho Cho
+Shunsuke Shimizu
+SimonP
+Takashi Sakamoto
+Tanu Kaskinen
+Temuri Doghonadze
+Toni Estevez
+Weijia Wang
+Wim Taymans
+Yureka
+acheronfail
+flyingOwl
+grimst
+hashitaku
+mooo
+peijiankang
+redfast00
+wael
+김인수
+
+
+PulseAudio 16.1
+
+A bug fix release.
+
+ * Fix parsing of percentage volumes with decimal points in pactl
+ * Fix crash with the "pacmd play-file" command when reads from the disk aren't frame-aligned
+ * Fix module-rtp-recv sometimes thinking it's receiving an Opus stream when it's not
+ * Fix frequent crashing in module-combine-sink, regression in 16.0
+ * Fix crashing on 32-bit architectures when using the GStreamer codecs for LDAC and AptX
+
+Contributors
+
+Georg Chini
+Igor V. Kovalenko
+Jaechul Lee
+Jan Palus
+Sean Greenslade
+
+
+PulseAudio 16.0
+
+Changes at a glance:
+ * Notes for end users
+   * Opus support in RTP modules
+   * Improved hardware support
+     * EPOS/Sennheiser GSP 670 USB/wireless headset
+     * SteelSeries GameDAC
+     * Behringer UMC22 generalized to Texas Instruments PCM2902 to support more products
+     * NI Komplete Audio 6 MK2 profiles
+   * Tunnel latency is now configurable
+   * Bluetooth device battery level reporting added
+   * Tunnel and combine-sunk latency fixes
+   * patcl can show information in JSON format
+   * Channel remixing can be disabled for module-combine-sink
+   * A lot of fixes to ALSA, bluetooth, and other components.
+ * Notes for application developers
+   * Stream latency reports now include resampler delay
+   * Module installation location changed, remember to upgrade paprefs to the latest version!
+ * Notes for packagers
+   * Opus support in the RTP modules requires enabling GStreamer
+   * Bluetooth battery level reporting via BlueZ requires enabling experimentals features in BlueZ
+   * New time smoother implementation
+   * Change Meson option 'daemon-only' to 'client'
+   * glib and fftw are now common dependencies, not only for the client.
+   * Enable GStreamer-based RTP by default when available
+
+Detailed change log:
+
+  https://www.freedesktop.org/wiki/Software/PulseAudio/Notes/16.0/
+
+Contributors
+
+Alexey Rubtsov
+Anders Jonsson
+Andika Triwidada
+Arun Raghavan
+Biswapriyo Nath
+BtbN
+Chengyi Zhao
+Chupligin Sergey
+Craig Howard
+Daniel Dantur
+Daniel Hernandez
+Diederik de Haas
+Dylan Van Assche
+Emilio Herrera
+Ettore Atalan
+Fran Diéguez
+Georg Chini
+Gogo Gogsi
+Göran Uddeborg
+Hela Basa
+Hui Wang
+Igor V. Kovalenko
+Jan Kuparinen
+Jaroslav Kysela
+Josef Haider
+João Paulo Rechi Vita
+Juho Hämäläinen
+Karl Ove Hufthammer
+Laurent Bigonville
+Luna Jernberg
+Lv Genggeng
+Marijn Suijten
+Mart Raudsepp
+Mathy Vanvoorden
+Olivier Gayot
+Ovari
+Oğuz Ersen
+Piotr Drąg
+Rafael Fontenelle
+Rico Tzschichholz
+Sanchayan Maity
+Sebastian Reichel
+Sergey A
+Sibo Dong
+Sungjoon Moon
+Takashi Sakamoto
+Takuro Onoue
+Tanu Kaskinen
+Temuri Doghonadze
+Will Thompson
+Yuri Chornoivan
+acheronfail
+baek inchan
+guest271314
+liaohanqin
+simmon
+simple
+tensorknower69
+김인수
+
+
+PulseAudio 15.0
+
+Changes at a glance:
+
+ * Notes for end users
+   * Support for LDAC and AptX bluetooth codecs, plus "SBC XQ" (SBC with higher-quality parameters)
+   * Support for HFP bluetooth profiles
+   * Support for Bluetooth A2DP AVRCP Absolute Volume
+   * ALSA path configuration files can now be placed in user home directory
+   * module-virtual-surround-sink rewritten
+   * More options for module-jackdbus-detect
+   * Improved hardware support
+     * SteelSeries Arctis 9
+     * HP Thunderbolt Dock 120W G2
+     * Behringer U-Phoria UMC22
+     * OnePlus Type-C Bullets
+     * Sennheiser GSX 1000/1200 PRO
+   * New udev variable: PULSE_MODARGS
+   * max_latency_msec argument added to module-null-source
+   * module-filter-apply can take filter parameters from device properties
+   * module-match can now be loaded multiple times
+   * Improvements to FreeBSD support
+   * Windows support added to Meson
+   * Additional commands for pactl
+   * Card profiles can be set to sticky
+ * Notes for application developers
+   * New API for sending messages from clients to PulseAudio objects
+   * New mechanism for applications to disable shared memory on their connection to PulseAudio
+ * Notes for packagers
+   * Autotools build system have been dropped
+   * The startup script can now read additional configuration from the /etc/pulse/default.pa.d/ directory
+   * Option to build client library and utilities only
+   * Avoid loading X11 modules on Wayland (GNOME-only for now)
+   * OSS support is now configurable in Meson
+   * Valgrind support is now configurable in Meson
+
+Detailed change log:
+
+  https://www.freedesktop.org/wiki/Software/PulseAudio/Notes/15.0/
+
+Contributors
+
+Alexey Rubtsov
+Alper Nebi Yasak
+Anders Jonsson
+Arun Raghavan
+Ben Buchwald
+Benjamin Valentin
+Carlos Garnacho
+Carmen Bianca Bakker
+Christopher Arndt
+Christopher Snowhill
+David
+Dusan Kazik
+Edward Lee
+Emilio Herrera
+Evan Miller
+Fabian Affolter
+Faidon Liambotis
+Felipe Sateler
+Frédéric Danis
+Georg Chini
+Greg V
+Göran Uddeborg
+Hela Basa
+Henri Chain
+Hui Wang
+Igor V. Kovalenko
+Ilja van Sprundel
+Jaechul Lee
+James Bottomley
+Jan Alexander Steffens (heftig)
+Jan Kuparinen
+Jaroslav Kysela
+Jason Nader
+Johannes Wolf
+Julien Humbert
+Kai-Heng Feng
+Karl Ove Hufthammer
+Klaas van Schelven
+Laurent Bigonville
+Laurențiu Nicola
+Lyndon Brown
+Marijn Suijten
+Martin Wilck
+Mattias Jernberg
+Milo Casagrande
+Nazar Mokrynskyi
+Oğuz Ersen
+Patrick Gaskin
+Patrick McLean
+Paul Seyfert
+Pierre Ossman
+Piotr Drąg
+Pjotr Vertaalt
+Ricky Tigg
+Robin Lahtinen
+Samuel Thibault
+Sanchayan Maity
+Scott Worley
+Sebastian Krzyszkowiak
+SimonP
+Takashi Sakamoto
+Tanu Kaskinen
+Tobias Weise
+Toni Estevez
+Yaron Shahrabani
+Yuri Chornoivan
+morrishoresh
+pseyfert
+scootergrisen
+simmon
+
+
 PulseAudio 14.2
 
 A bug fix release.

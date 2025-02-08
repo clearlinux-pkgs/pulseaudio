@@ -1,6 +1,11 @@
---without-fftw
---disable-gtk3
---without-speex
---without-caps
---disable-bluez5
---disable-bluez4
+-Dfftw=disabled
+-Dspeex=disabled
+-Dbluez5=disabled
+-Ddatabase=gdbm
+-Dlirc=disabled
+-Delogind=disabled
+-Dwebrtc-aec=disabled
+-Ddoxygen=false
+-Dgstreamer=disabled
+-Dopenssl=disabled
+-Dgtk=disabled

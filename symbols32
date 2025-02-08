@@ -97,6 +97,7 @@ libpulse.so.0:pa_context_remove_autoload_by_name
 libpulse.so.0:pa_context_remove_sample
 libpulse.so.0:pa_context_rttime_new
 libpulse.so.0:pa_context_rttime_restart
+libpulse.so.0:pa_context_send_message_to_object
 libpulse.so.0:pa_context_set_card_profile_by_index
 libpulse.so.0:pa_context_set_card_profile_by_name
 libpulse.so.0:pa_context_set_default_sink

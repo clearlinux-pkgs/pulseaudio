@@ -1,6 +1,10 @@
---with-udev-rules-dir=/usr/lib/udev/rules.d
---enable-orc
---with-speex
---enable-bluez5
---disable-bluez4
---disable-bluez5-ofono-headset
+-Dudevrulesdir=/usr/lib/udev/rules.d
+-Dorc=enabled
+-Dspeex=enabled
+-Dbluez5=enabled
+-Dbluez5-ofono-headset=false
+-Ddatabase=gdbm
+-Dlirc=disabled
+-Delogind=disabled
+-Dwebrtc-aec=disabled
+-Ddoxygen=false
